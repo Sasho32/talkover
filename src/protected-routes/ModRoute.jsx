@@ -1,7 +1,5 @@
 import { useContext } from 'react';
 import { UserContext } from '../UserContext';
-import { doc } from 'firebase/firestore';
-import { db } from '../firebase';
 import { Outlet, Navigate } from 'react-router-dom';
 import { getUserRecord } from '../utils/user';
 

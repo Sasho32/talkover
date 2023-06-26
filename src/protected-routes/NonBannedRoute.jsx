@@ -1,15 +1,13 @@
 import { useContext } from 'react';
 import { UserContext } from '../UserContext';
-import { doc } from 'firebase/firestore';
-import { db } from '../firebase';
 import { Outlet, Navigate } from 'react-router-dom';
 import { getUserRecord } from '../utils/user';
 
-function ModRoute() {
+function NonBannedRoute() {
     const user = useContext(UserContext);
     const userRecord = getUserRecord(user.uid);
 
     return userRecord.intruder !== 'banned' ? <Outlet /> : <Navigate to="/" />;
 }
 
-export default ModRoute;
+export default NonBannedRoute;
