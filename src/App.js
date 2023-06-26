@@ -6,8 +6,6 @@ import {
     RouterProvider,
 } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import Main from './Main';
-import Nav from './Nav';
 import { UserContext } from './UserContext';
 import { auth } from './firebase';
 import AuthRoute from './protected-routes/AuthRoute';
@@ -17,9 +15,7 @@ import ModRoute from './protected-routes/ModRoute';
 const router = createBrowserRouter(
     createRoutesFromElements(
         <>
-            <Route path="/sign-up" element={<span>Sign up view</span>} />
-            <Route path="/sign-in" element={<span>Sign in view</span>} />
-
+            <Route path="/auth" element={<span>Sign in/up view</span>} />
             <Route element={<AuthRoute />}>
                 <Route element={<h1>Shared nav</h1>}>
                     <Route path="/posts">
@@ -95,7 +91,9 @@ const router = createBrowserRouter(
 );
 
 function App() {
-    const [user, setUser] = useState('user');
+    const [user, setUser] = useState(null);
+
+    const userRecord = user && getUserRecord(user.uid);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
@@ -103,11 +101,16 @@ function App() {
             setUser(user);
         });
 
-        return () => unsubscribe(); // Clean up the listener when the component unmounts
+        return () => unsubscribe();
     }, []);
 
     return (
-        <UserContext.Provider value={user}>
+        <UserContext.Provider
+            value={{
+                user,
+                userRecord,
+            }}
+        >
             <RouterProvider router={router} />;
         </UserContext.Provider>
     );
