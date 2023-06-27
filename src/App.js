@@ -4,20 +4,27 @@ import {
     createRoutesFromElements,
     Route,
     RouterProvider,
+    Navigate,
 } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
+import { onSnapshot, doc } from 'firebase/firestore';
 import { UserContext } from './UserContext';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
 import AuthRoute from './protected-routes/AuthRoute';
 import NonBannedRoute from './protected-routes/NonBannedRoute';
 import ModRoute from './protected-routes/ModRoute';
+import AuthPage from './pages/auth/AuthPage';
+import TestNav from './components/TestNav';
+import GuestRoute from './protected-routes/GuestRoute';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <>
-            <Route path="/auth" element={<span>Sign in/up view</span>} />
+            <Route element={<GuestRoute />}>
+                <Route path="/auth" element={<AuthPage />} />
+            </Route>
             <Route element={<AuthRoute />}>
-                <Route element={<h1>Shared nav</h1>}>
+                <Route element={<TestNav />}>
                     <Route path="/posts">
                         <Route index element={<span>Posts view</span>} />
                         <Route element={<ModRoute />}>
@@ -85,33 +92,41 @@ const router = createBrowserRouter(
                     />
                 </Route>
             </Route>
-            <Route path="*" element={<span>Page not found!</span>} />
+            <Route path="*" element={<Navigate to="/posts" />} />
         </>
     )
 );
 
 function App() {
-    const [user, setUser] = useState(null);
-
-    const userRecord = user && getUserRecord(user.uid);
+    const [user, setUser] = useState('initial');
+    const [userRecord, setUserRecord] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
-            console.log(`User changing with value of ${user}`);
+        const unsubscribeFromAuth = onAuthStateChanged(auth, user => {
             setUser(user);
         });
 
-        return () => unsubscribe();
+        return () => {
+            unsubscribeFromAuth();
+        };
     }, []);
 
+    useEffect(() => {
+        let unsubscribeFromUser = () => {};
+
+        if (user?.uid) {
+            const userDoc = doc(db, 'users', user.uid);
+            unsubscribeFromUser = onSnapshot(userDoc, doc => {
+                setUserRecord(doc.data());
+            });
+        }
+
+        return () => unsubscribeFromUser();
+    }, [user]);
+
     return (
-        <UserContext.Provider
-            value={{
-                user,
-                userRecord,
-            }}
-        >
-            <RouterProvider router={router} />;
+        <UserContext.Provider value={{ user, userRecord }}>
+            <RouterProvider router={router} />
         </UserContext.Provider>
     );
 }
