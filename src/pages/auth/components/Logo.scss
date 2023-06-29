@@ -1,0 +1,85 @@
+.logo {
+    width: 50%;
+    transition: transform 1.1s ease-in-out;
+    transition-delay: 0.4s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > .heading {
+        position: relative;
+
+        > h1 {
+            color: var(--logo-primary);
+            position: relative;
+            z-index: 2;
+            font-size: clamp(2em, 5vw, 5em);
+
+            > span {
+                color: var(--logo-secondary);
+            }
+        }
+        > span {
+            position: absolute;
+            z-index: 1;
+
+            &#s {
+                width: 18%;
+                aspect-ratio: 1 / 1;
+                border-radius: 50%;
+                background-color: var(--logo-circle-s-bg);
+                right: -3%;
+                top: -10%;
+            }
+            &#m {
+                width: 25%;
+                aspect-ratio: 1 / 1;
+                border-radius: 50%;
+                background-color: var(--logo-circle-m-bg);
+                left: -2%;
+                top: 13%;
+            }
+            &#l {
+                width: 33%;
+                aspect-ratio: 1 / 1;
+                border-radius: 50%;
+                background-color: var(--logo-circle-l-bg);
+                left: -17%;
+                top: -75%;
+            }
+        }
+    }
+    > h2 {
+        color: var(--logo-sub-cl);
+        font-size: clamp(1em, 2vw, 2.5em);
+        white-space: nowrap;
+    }
+}
+
+.right-lower-banner .logo {
+    transform: translateX(187.5rem);
+}
+
+main.sign-up-mode .left-upper-banner .logo {
+    transform: translateX(-187.5rem);
+}
+
+main.sign-up-mode .right-lower-banner .logo {
+    pointer-events: all;
+    transform: translateX(0%);
+}
+
+@media (max-width: 54.375rem) {
+    .right-lower-banner .logo {
+        transform: translateY(187.5rem);
+    }
+
+    main.sign-up-mode .left-upper-banner .logo {
+        transform: translateY(-187.5rem);
+    }
+
+    main.sign-up-mode .right-lower-banner .logo {
+        transform: translateX(0%);
+    }
+}
