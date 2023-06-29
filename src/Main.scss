@@ -1,0 +1,60 @@
+main {
+    background-color: var(--main-bg);
+    font-family: var(--font-kurale);
+    min-height: 100vh;
+}
+
+main.user {
+    width: calc(100vw - 15.625rem);
+    margin-left: 15.625rem;
+    // 250px
+}
+
+main.guest {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transform: translateX(-50%);
+        background-color: var(--banner-bg);
+        transition: 1.8s ease-in-out;
+        z-index: 6;
+    }
+
+    &.sign-up-mode::before {
+        transform: translateX(50%);
+    }
+}
+
+@media (max-width: 37.5rem) {
+    main.user {
+        width: 100vw;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 54.375rem) {
+    main.guest {
+        // min-height: 100vh;
+        // min-height: 100svh;
+        min-height: 43.75rem;
+        // иначе при android browser и фокус на input-field се качва банера в него с горните 2
+
+        &::before {
+            min-height: 100vh;
+            min-height: 100svh;
+            /* за android browser примерно не важи svh */
+            transform: translateY(-70%);
+        }
+
+        &.sign-up-mode::before {
+            transform: translateY(70%);
+        }
+    }
+}
