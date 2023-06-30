@@ -1,0 +1,22 @@
+div.profile-pic-cutter {
+    width: var(--profile-pic-size);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+    background-color: hsl(84, 100%, 59%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+
+    > img {
+        width: var(--profile-pic-size);
+    }
+}
+
+@media (pointer: fine) {
+    div.profile-pic-cutter:hover {
+        cursor: pointer;
+    }
+}
