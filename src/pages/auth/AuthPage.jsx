@@ -2,17 +2,14 @@ import { useState } from 'react';
 import Banners from './components/Banners';
 import SignInForm from './components/SignInForm';
 import SignUpForm from './components/SignUpForm';
-import './AuthPage.scss';
 import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../UserContext';
+import './components/Forms.scss';
 
 function AuthPage() {
     const { user } = useContext(UserContext);
     const [mode, setMode] = useState('sign-in');
-
-    if (user === 'initial') return;
-    if (user?.uid) return <Navigate to="/posts" />;
 
     function getSignIn() {
         setMode('sign-in');
@@ -24,7 +21,8 @@ function AuthPage() {
     // без ресет на формите - струва ми се по user friendly
 
     return (
-        <main className={`${mode}-mode`}>
+        <main className={`guest ${mode}-mode`}>
+            {/* main-а няма да го местя като shared, защото guest/user мога да ги контролираме през user ?, но мода на auth-а e тука */}
             <Banners getSignIn={getSignIn} getSignUp={getSignUp} />
             <div className="forms-container">
                 <SignInForm />
