@@ -1,0 +1,134 @@
+.forms-container {
+    position: absolute;
+    top: 50%;
+    transform: translate(100%, -50%);
+    width: 50%;
+    transition: 1s 0.7s ease-in-out;
+    display: grid;
+    grid-template-columns: 1fr;
+    z-index: 5;
+
+    > form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        flex-direction: column;
+        transition: all 0.2s 0.7s;
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+
+        > h2.title {
+            font-size: 2.2rem;
+            color: var(--light-black);
+        }
+
+        .input-field {
+            width: clamp(15.625rem, 90%, 31.25rem);
+            background-color: var(--logo-primary);
+            height: 3.4375rem;
+            border-radius: 3rem;
+            display: grid;
+            box-shadow: var(--box-shadow);
+            grid-template-columns: 15% 85%;
+            /*!! padding: 0 0.4rem; */
+            /* долните 2 са за сладъра */
+            position: relative;
+            overflow: hidden;
+
+            i {
+                text-align: center;
+                line-height: 3.4375rem;
+                color: var(--light-black);
+                transition: 0.5s;
+                font-size: 1.1rem;
+            }
+
+            input {
+                background: none;
+                outline: none;
+                border: none;
+                line-height: 1;
+                font-weight: 600;
+                font-size: 1.1rem;
+                font-family: var(--font-kurale);
+                color: #333;
+
+                &::placeholder {
+                    color: var(--grey);
+                }
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                width: 0%;
+                height: 6%;
+                background-color: var(--logo-circle-m-bg);
+                bottom: -1%;
+                transition: width 0.4s linear;
+            }
+
+            &:has(input:focus)::before {
+                width: 100%;
+            }
+
+            > i[class*='fa-eye'] {
+                position: absolute;
+                right: 3%;
+            }
+        }
+
+        > .btn {
+            width: 8rem;
+
+            background-color: var(--logo-circle-m-bg);
+            border: none;
+            outline: none;
+            height: 3.0625rem;
+            border-radius: 2rem;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-family: var(--font-kurale);
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        > span.error {
+            background-color: hsl(348, 83%, 80%);
+            color: hsl(348, 83%, 35%);
+            border: 0.06rem solid;
+            padding: 1rem;
+            border-radius: 1rem;
+            width: clamp(15.625rem, 90%, 31.25rem);
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+}
+
+main.sign-up-mode .forms-container {
+    transform: translate(0, -50%);
+}
+
+@media (max-width: 54.375rem) {
+    .forms-container {
+        height: 70%;
+        width: 100%;
+        bottom: 0%;
+        top: initial;
+        transform: translateY(0);
+
+        > form {
+            width: 100vw;
+            /* zashtoto inache v mobile v android browser izliza izvyn konteinera, koito e 100vw -> todo: mahni konteinera */
+            transition-delay: 1s;
+        }
+    }
+
+    main.sign-up-mode .forms-container {
+        bottom: 30%;
+        transform: translate(0, 0);
+    }
+}

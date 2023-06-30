@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { signIn } from '../../../utils/user';
+import { extractAuthErrorMessage, signIn } from '../../../utils/user';
 import { useNavigate } from 'react-router-dom';
+import './SignInForm.scss';
 
 function SignInForm() {
     const [username, setUsername] = useState('');
@@ -26,13 +27,13 @@ function SignInForm() {
 
             navigate('/posts');
         } catch (e) {
-            setError(e.message);
+            setError(extractAuthErrorMessage(e));
         }
     }
 
     return (
         <form onSubmit={handleSubmit} id="sign-in-form">
-            <h2 className="title">Sign in</h2>
+            <h2 className="title">Welcome back!</h2>
 
             <div className="input-field">
                 <i className="fas fa-user"></i>

@@ -49,3 +49,16 @@ function createUserRecord(email, id) {
         joinedOn: serverTimestamp(),
     };
 }
+
+export function extractAuthErrorMessage(error) {
+    const regex = /\(auth\/(?<type>.*)\)/g;
+    const {
+        groups: { type },
+    } = regex.exec(error.message);
+
+    return capitalizeFirstLetter(type).replaceAll('-', ' ') + '.';
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

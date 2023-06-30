@@ -1,4 +1,5 @@
 import Logo from './Logo';
+import './Banners.scss';
 
 function Banners({ getSignIn, getSignUp }) {
     return (
