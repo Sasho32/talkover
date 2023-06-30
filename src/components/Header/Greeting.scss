@@ -1,0 +1,9 @@
+header > div#personal-info p > span {
+    font-weight: bold;
+}
+
+@media (pointer: fine) {
+    header > div#personal-info p > span:hover {
+        cursor: pointer;
+    }
+}

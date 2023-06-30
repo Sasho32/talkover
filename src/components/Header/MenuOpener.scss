@@ -1,0 +1,17 @@
+header > i.fa-solid.fa-bars {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (pointer: fine) {
+    header > i.fa-solid.fa-bars:hover {
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 37.5rem) {
+    header > i.fa-solid.fa-bars {
+        opacity: 1;
+        pointer-events: all;
+    }
+}

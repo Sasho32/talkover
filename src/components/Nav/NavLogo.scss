@@ -1,0 +1,13 @@
+nav > h2 {
+    text-align: right;
+    padding-right: 0.625rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 5%;
+    font-family: var(--font-neucha);
+
+    span.danger {
+        color: hsl(60, 100%, 45%);
+    }
+}
