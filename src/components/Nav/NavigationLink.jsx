@@ -1,7 +1,11 @@
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { NavContext } from './NavContext';
 import './NavigationLink.scss';
 
-function NavigationLink({ closeNav, route, routeInfo }) {
+function NavigationLink({ route, routeInfo }) {
+    const { closeNav } = useContext(NavContext);
+
     return (
         <li onClick={closeNav} className="link">
             <NavLink to={route} end>

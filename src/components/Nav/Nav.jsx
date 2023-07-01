@@ -1,16 +1,14 @@
 import { signOut } from 'firebase/auth';
-import { useContext, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { UserContext } from '../../UserContext';
 import NavLogo from './NavLogo';
 import NavigationLink from './NavigationLink';
 import './Nav.scss';
 
-function Nav() {
+function Nav({ openedNav }) {
     const { user } = useContext(UserContext);
-    const [opened, setOpened] = useState(false);
-    // при отваряне на страницата в mobile искам да е скрито по дефолт, а и за desktop - не го бърка така или иначе
 
     const routes = {
         '/posts': {
@@ -41,25 +39,15 @@ function Nav() {
     // трябва да се инициализира в компонента, защото ми трябва достъп до uid-то
     // няма да го слагам в useMemo, защото мисля, че инициализацията на обикновен обект не би коствала нищо
 
-    function toggleNav() {
-        setOpened(opnd => !opnd);
-        // да няма излишни рирендъри
-    }
-
-    function closeNav() {
-        if (opened) setOpened(false);
-    }
-
     return (
         <>
-            <nav className={`${opened ? 'active' : ''}`}>
+            <nav className={`${openedNav ? 'active' : ''}`}>
                 <NavLogo />
                 <ul>
                     {Object.keys(routes).map(route => {
                         return (
                             <NavigationLink
                                 key={route}
-                                closeNav={closeNav}
                                 route={route}
                                 routeInfo={routes[route]}
                             />
@@ -79,7 +67,6 @@ function Nav() {
                     </li>
                 </ul>
             </nav>
-            <Outlet context={{ toggleNav }} />
         </>
     );
 }

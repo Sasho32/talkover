@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import { UserContext } from '../../UserContext';
 import './Header.scss';
-import { Outlet, useOutletContext, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Greeting from './Greeting';
 import MenuOpener from './MenuOpener';
 import ProfilePicCutter from '../ProfilePicCutter';
 
 function Header() {
     const { userRecord } = useContext(UserContext);
-    const { toggleNav } = useOutletContext();
     const navigate = useNavigate();
 
     function goToProfile() {
@@ -20,20 +19,17 @@ function Header() {
     но само това е начина да са share-нати nav-а и header-а; плюс това те така или иначе ще трябва да ререндерират, защото се сменя view-то */
 
     return (
-        <>
-            <header>
-                <MenuOpener onClick={toggleNav} />
-                <div id="personal-info">
-                    <Greeting
-                        goToProfile={goToProfile}
-                        username={userRecord?.username}
-                        role={userRecord?.role}
-                    />
-                    <ProfilePicCutter src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXiexOIV0OhagbnFolPgbHwVDZLliwXzdS_w&usqp=CAU" />
-                </div>
-            </header>
-            <Outlet />
-        </>
+        <header>
+            <MenuOpener />
+            <div id="personal-info">
+                <Greeting
+                    goToProfile={goToProfile}
+                    username={userRecord?.username}
+                    role={userRecord?.role}
+                />
+                <ProfilePicCutter src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXiexOIV0OhagbnFolPgbHwVDZLliwXzdS_w&usqp=CAU" />
+            </div>
+        </header>
     );
 }
 

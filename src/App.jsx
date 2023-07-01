@@ -17,8 +17,7 @@ import AuthPage from './pages/auth/AuthPage';
 import GuestRoute from './protected-routes/GuestRoute';
 import './App.scss';
 import './Main.scss';
-import Nav from './components/Nav/Nav';
-import Header from './components/Header/Header';
+import SharedLayout from './components/SharedLayout';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -27,75 +26,70 @@ const router = createBrowserRouter(
                 <Route path="/auth" element={<AuthPage />} />
             </Route>
             <Route element={<AuthRoute />}>
-                <Route element={<Nav />}>
-                    <Route element={<Header />}>
-                        <Route path="/posts">
-                            <Route index element={<span>Posts view</span>} />
-                            <Route element={<ModRoute />}>
-                                <Route
-                                    path="pending-posts"
-                                    element={<span>Pending posts view</span>}
-                                />
-                            </Route>
+                <Route element={<SharedLayout />}>
+                    <Route path="/posts">
+                        <Route index element={<span>Posts view</span>} />
+                        <Route element={<ModRoute />}>
                             <Route
-                                path="my-posts"
-                                element={<span>My posts view</span>}
+                                path="pending-posts"
+                                element={<span>Pending posts view</span>}
                             />
-                            <Route
-                                path="liked-posts"
-                                element={<span>Liked posts view</span>}
-                            />
-                            <Route
-                                path=":id"
-                                element={<span>Single post view</span>}
-                            />
-                            <Route
-                                path=":id/comments"
-                                element={<span>Single post comments view</span>}
-                            />
-                            <Route
-                                path=":id/comments/comment-id"
-                                element={
-                                    <span>
-                                        Single post specific comment first view
-                                    </span>
-                                }
-                            />
-                            <Route element={<NonBannedRoute />}>
-                                <Route
-                                    path="new-post"
-                                    element={<span>Create post view</span>}
-                                />
-                                <Route
-                                    path=":id/edit"
-                                    element={<span>Edit post view</span>}
-                                />
-                                {/* Ownership protection-ът ще е в самия page component */}
-                            </Route>
-                        </Route>
-                        <Route path="/polls">
-                            <Route index element={<span>Polls view</span>} />
-                            <Route element={<ModRoute />}>
-                                <Route
-                                    path="new-poll"
-                                    element={<span>Create poll view</span>}
-                                />
-                            </Route>
                         </Route>
                         <Route
-                            path="/my-comments"
-                            element={<span>My comments page</span>}
+                            path="my-posts"
+                            element={<span>My posts view</span>}
                         />
-                        <Route path="/community">
+                        <Route
+                            path="liked-posts"
+                            element={<span>Liked posts view</span>}
+                        />
+                        <Route
+                            path=":id"
+                            element={<span>Single post view</span>}
+                        />
+                        <Route
+                            path=":id/comments"
+                            element={<span>Single post comments view</span>}
+                        />
+                        <Route
+                            path=":id/comments/comment-id"
+                            element={
+                                <span>
+                                    Single post specific comment first view
+                                </span>
+                            }
+                        />
+                        <Route element={<NonBannedRoute />}>
                             <Route
-                                index
-                                element={<span>Community page</span>}
+                                path="new-post"
+                                element={<span>Create post view</span>}
                             />
                             <Route
-                                path=":userId"
-                                element={<span>Profile page</span>}
+                                path=":id/edit"
+                                element={<span>Edit post view</span>}
+                            />
+                            {/* Ownership protection-ът ще е в самия page component */}
+                        </Route>
+                    </Route>
+                    <Route path="/polls">
+                        <Route index element={<span>Polls view</span>} />
+                        <Route element={<ModRoute />}>
+                            <Route
+                                path="new-poll"
+                                element={<span>Create poll view</span>}
                             />
                         </Route>
+                    </Route>
+                    <Route
+                        path="/my-comments"
+                        element={<span>My comments page</span>}
+                    />
+                    <Route path="/community">
+                        <Route index element={<span>Community page</span>} />
+                        <Route
+                            path=":userId"
+                            element={<span>Profile page</span>}
+                        />
                     </Route>
                 </Route>
             </Route>
