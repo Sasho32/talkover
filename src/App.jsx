@@ -18,6 +18,7 @@ import GuestRoute from './protected-routes/GuestRoute';
 import './App.scss';
 import './Main.scss';
 import SharedLayout from './components/SharedLayout';
+import PostsPage from './pages/posts/PostsPage';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,7 +29,7 @@ const router = createBrowserRouter(
             <Route element={<AuthRoute />}>
                 <Route element={<SharedLayout />}>
                     <Route path="/posts">
-                        <Route index element={<span>Posts view</span>} />
+                        <Route index element={<PostsPage />} />
                         <Route element={<ModRoute />}>
                             <Route
                                 path="pending-posts"
