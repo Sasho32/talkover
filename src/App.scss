@@ -28,6 +28,15 @@
         rgb(18, 36, 52) 0%,
         rgb(4, 37, 72) 100%
     );
+    --section-heading-bg: radial-gradient(
+        780px at 37.8% 100.3%,
+        rgb(19, 55, 115) 2.2%,
+        rgb(32, 7, 80) 20.2%,
+        rgb(27, 88, 111) 58.6%,
+        rgb(115, 88, 44) 75%,
+        rgb(99, 19, 90) 89.6%,
+        rgb(12, 51, 76) 96.1%
+    );
 
     --blue: rgb(40, 123, 255);
     --white: #fff;
@@ -56,10 +65,4 @@
     --font-kurale: 'Kurale', serif;
     --font-neucha: 'Neucha', cursive;
     --font-roboto: 'Roboto', sans-serif;
-}
-body > div#root > span {
-    display: inline-block;
-    margin-left: 25rem;
-    font-family: var(--font-kurale);
-    font-size: 2rem;
 }
