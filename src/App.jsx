@@ -19,6 +19,11 @@ import './App.scss';
 import './Main.scss';
 import SharedLayout from './components/SharedLayout';
 import PostsPage from './pages/posts/PostsPage';
+import DashboardLayout from './components/DashboardLayout';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const client = new QueryClient();
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,22 +33,18 @@ const router = createBrowserRouter(
             </Route>
             <Route element={<AuthRoute />}>
                 <Route element={<SharedLayout />}>
-                    <Route path="/posts">
-                        <Route index element={<PostsPage />} />
-                        <Route element={<ModRoute />}>
+                    <Route element={<DashboardLayout />}>
+                        <Route path="/posts">
+                            <Route index element={<PostsPage />} />
+                            <Route path="liked" element={<PostsPage />} />
+                            <Route path="my-posts" element={<PostsPage />} />
+                            {/* тези 3-те са отделни раутове просто, за да може да работи active на navlink-а иначе щях да ги направя и тях куери параметри */}
+                            {/* <Route element={<ModRoute />}>
                             <Route
                                 path="pending-posts"
                                 element={<span>Pending posts view</span>}
                             />
                         </Route>
-                        <Route
-                            path="my-posts"
-                            element={<span>My posts view</span>}
-                        />
-                        <Route
-                            path="liked-posts"
-                            element={<span>Liked posts view</span>}
-                        />
                         <Route
                             path=":id"
                             element={<span>Single post view</span>}
@@ -69,18 +70,20 @@ const router = createBrowserRouter(
                                 path=":id/edit"
                                 element={<span>Edit post view</span>}
                             />
-                            {/* Ownership protection-ът ще е в самия page component */}
+                             Ownership protection-ът ще е в самия page component 
+                        </Route> */}
+                        </Route>
+                        <Route path="/polls">
+                            <Route index element={<span>Polls view</span>} />
+                            <Route element={<ModRoute />}>
+                                <Route
+                                    path="new-poll"
+                                    element={<span>Create poll view</span>}
+                                />
+                            </Route>
                         </Route>
                     </Route>
-                    <Route path="/polls">
-                        <Route index element={<span>Polls view</span>} />
-                        <Route element={<ModRoute />}>
-                            <Route
-                                path="new-poll"
-                                element={<span>Create poll view</span>}
-                            />
-                        </Route>
-                    </Route>
+
                     <Route
                         path="/my-comments"
                         element={<span>My comments page</span>}
@@ -127,9 +130,11 @@ function App() {
     }, [user]);
 
     return (
-        <UserContext.Provider value={{ user, userRecord }}>
-            <RouterProvider router={router} />
-        </UserContext.Provider>
+        <QueryClientProvider client={client}>
+            <UserContext.Provider value={{ user, userRecord }}>
+                <RouterProvider router={router} />
+            </UserContext.Provider>
+        </QueryClientProvider>
     );
 }
 
