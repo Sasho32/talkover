@@ -7,8 +7,14 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+a {
+    color: var(--banner-bg);
+    text-decoration: none;
+}
+
 :root {
-    --main-bg: hsl(0, 0%, 90%);
+    // --main-bg: hsl(0, 0%, 90%);
+    --main-bg: hsl(240, 20%, 97%);
 
     --banner-bg: hsl(0, 0%, 0%);
     --logo-primary: hsl(0, 0%, 100%);
@@ -65,4 +71,18 @@
     --font-kurale: 'Kurale', serif;
     --font-neucha: 'Neucha', cursive;
     --font-roboto: 'Roboto', sans-serif;
+}
+
+.skeleton {
+    animation: skeleton-loading 1s linear infinite alternate;
+    height: 30rem;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 80%);
+    }
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
 }

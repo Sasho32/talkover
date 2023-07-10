@@ -8,7 +8,8 @@ main.user {
     min-height: calc(100vh - 3.8rem);
     margin-left: 15.625rem;
     // 250px
-    padding: 2rem;
+    padding-block: 2rem 1rem;
+    padding-inline: 3rem;
 }
 
 main.guest {
@@ -36,6 +37,7 @@ main.guest {
 @media (max-width: 37.5rem) {
     main.user {
         margin-left: 0;
+        padding-inline: 0;
     }
 }
 
