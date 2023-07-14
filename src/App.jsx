@@ -22,6 +22,8 @@ import PostsPage from './pages/posts/PostsPage';
 import DashboardLayout from './components/DashboardLayout';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import PollsPage from './pages/polls/PollsPage';
+import LikedPostsPage from './pages/liked-posts/LikedPostsPage';
 
 const client = new QueryClient();
 
@@ -34,54 +36,49 @@ const router = createBrowserRouter(
             <Route element={<AuthRoute />}>
                 <Route element={<SharedLayout />}>
                     <Route element={<DashboardLayout />}>
-                        <Route path="/posts">
-                            <Route index element={<PostsPage />} />
-                            <Route path="liked" element={<PostsPage />} />
-                            <Route path="my-posts" element={<PostsPage />} />
-                            {/* тези 3-те са отделни раутове просто, за да може да работи active на navlink-а иначе щях да ги направя и тях куери параметри */}
-                            {/* <Route element={<ModRoute />}>
-                            <Route
-                                path="pending-posts"
-                                element={<span>Pending posts view</span>}
-                            />
+                        <Route path="/home">
+                            <Route path="posts" element={<PostsPage />} />
+
+                            <Route path="polls" element={<PollsPage />} />
                         </Route>
-                        <Route
-                            path=":id"
-                            element={<span>Single post view</span>}
-                        />
-                        <Route
-                            path=":id/comments"
-                            element={<span>Single post comments view</span>}
-                        />
-                        <Route
-                            path=":id/comments/comment-id"
-                            element={
-                                <span>
-                                    Single post specific comment first view
-                                </span>
-                            }
-                        />
-                        <Route element={<NonBannedRoute />}>
+                    </Route>
+
+                    <Route path="/home">
+                        <Route path="posts">
                             <Route
-                                path="new-post"
-                                element={<span>Create post view</span>}
+                                path=":id"
+                                element={<span>Single post view</span>}
                             />
-                            <Route
-                                path=":id/edit"
-                                element={<span>Edit post view</span>}
-                            />
-                             Ownership protection-ът ще е в самия page component 
-                        </Route> */}
+                            <Route element={<NonBannedRoute />}>
+                                <Route
+                                    path="new"
+                                    element={<span>Create post view</span>}
+                                />
+                            </Route>
                         </Route>
-                        <Route path="/polls">
-                            <Route index element={<span>Polls view</span>} />
+                        {/* ще приема qp comment=commentId => ако го има директно вкарва в comments mode и го търси - ако го няма изкарва коментарите поред и просто някакъв спан 'comment you are looking for was not found';
+                                тр вкарам и editing на коментар вътре
+                                */}
+                        <Route path="polls">
                             <Route element={<ModRoute />}>
                                 <Route
-                                    path="new-poll"
+                                    path="new"
                                     element={<span>Create poll view</span>}
                                 />
                             </Route>
                         </Route>
+                    </Route>
+
+                    <Route
+                        path="/liked-posts"
+                        element={<span>Liked posts page</span>}
+                    />
+                    <Route path="/my-posts" element={<PostsPage />} />
+                    <Route element={<ModRoute />}>
+                        <Route
+                            path="/pending-posts"
+                            element={<span>Pending posts view</span>}
+                        />
                     </Route>
 
                     <Route
@@ -97,7 +94,7 @@ const router = createBrowserRouter(
                     </Route>
                 </Route>
             </Route>
-            <Route path="*" element={<Navigate to="/posts" />} />
+            <Route path="*" element={<Navigate to="/home/posts" />} />
         </>
     )
 );
@@ -121,12 +118,20 @@ function App() {
 
         if (user?.uid) {
             const userDoc = doc(db, 'users', user.uid);
-            unsubscribeFromUser = onSnapshot(userDoc, doc => {
-                setUserRecord(doc.data());
+            unsubscribeFromUser = onSnapshot(userDoc, async doc => {
+                const { claims } = await user.getIdTokenResult();
+
+                setUserRecord({
+                    ...doc.data(),
+                    admin: claims.admin ? true : false,
+                });
             });
         }
 
-        return () => unsubscribeFromUser();
+        return () => {
+            unsubscribeFromUser();
+            setUserRecord(null);
+        };
     }, [user]);
 
     return (
