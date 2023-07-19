@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import { UserContext } from '../UserContext';
+
 import { Outlet, Navigate } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
 
 function GuestRoute() {
     const { user } = useContext(UserContext);
