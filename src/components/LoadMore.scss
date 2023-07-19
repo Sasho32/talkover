@@ -1,0 +1,19 @@
+section.load-more-btn {
+    background-color: rgba(0, 0, 0, 0.816);
+    box-shadow: var(--box-shadow);
+    font-weight: bold;
+    color: crimson;
+    width: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-sizing: content-box;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    margin-inline: auto;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
