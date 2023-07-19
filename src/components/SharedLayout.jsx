@@ -1,8 +1,9 @@
-import Header from './Header/Header';
-import Nav from './Nav/Nav';
 import { Outlet } from 'react-router-dom';
-import { useState } from 'react';
-import { NavContext } from './Nav/NavContext';
+import { useState, useEffect } from 'react';
+import Nav from './Nav/Nav';
+import Header from './Header/Header';
+import WarningMessage from './WarningMessage';
+import { NavContext } from '../contexts/NavContext';
 
 function SharedLayout() {
     const [openedNav, setOpenedNav] = useState(false);
@@ -17,6 +18,12 @@ function SharedLayout() {
         if (openedNav) setOpenedNav(false);
     }
 
+    const [openedWarning, setOpenedWarning] = useState(false);
+
+    useEffect(() => {
+        setOpenedWarning(userRecord?.intruder === 'warned');
+    }, [userRecord]);
+
     return (
         <>
             <NavContext.Provider value={{ toggleNav, closeNav }}>
@@ -24,7 +31,10 @@ function SharedLayout() {
                 <Header />
             </NavContext.Provider>
             <main className="user">
-                <Outlet />
+                {openedWarning && (
+                    <WarningMessage setOpenedWarning={setOpenedWarning} />
+                )}
+                <Outlet context={stats} />
             </main>
         </>
     );

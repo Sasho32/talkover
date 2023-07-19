@@ -1,0 +1,27 @@
+.alert {
+    margin-block-end: 2rem;
+    padding: clamp(0.625rem, 5vw, 1.875rem);
+    position: relative;
+    border-radius: 0.3125rem;
+    box-shadow: 0 0 0.9375rem 0.3125rem #ccc;
+    background-color: #f7a5a1;
+    border-left: 0.3125rem solid #9e0800;
+    transition: all 800ms;
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+
+    > h3 {
+        text-transform: uppercase;
+        font-size: clamp(1.5rem, 2vw, 1.8rem);
+    }
+    .close {
+        position: absolute;
+        font-size: 1.6rem;
+        color: #9e0800;
+        top: 0.4rem;
+        right: 0.4rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
