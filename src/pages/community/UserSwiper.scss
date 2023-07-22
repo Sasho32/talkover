@@ -1,0 +1,139 @@
+section#users > section#table > article.user {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &.skeleton {
+        height: 3rem;
+    }
+}
+section#users > section#table > article.user:hover {
+    cursor: pointer;
+}
+
+section#users > section#table > article.user > div.main-info {
+    font-weight: bold;
+    font-size: clamp(1rem, 5vw, 1.6rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 10px;
+    position: relative;
+}
+
+section#users > section#table > article.user > div.main-info::before {
+    position: absolute;
+    content: '';
+    background: hsl(223, 89%, 85%);
+    width: 0;
+    height: 100%;
+    transition: width 500ms;
+}
+section#users > section#table > article.user.opened > div.main-info::before {
+    width: 100%;
+}
+
+section#users > section#table > article.user > div.main-info > i.fa-angle-up {
+    transition: all 500ms;
+    margin-right: 20px;
+}
+
+section#users
+    > section#table
+    > article.user.opened
+    > div.main-info
+    > i.fa-angle-up {
+    transform: rotateZ(180deg);
+}
+
+section#users > section#table > article.user > div.main-info > div.nickname {
+    position: relative;
+    // за да излиза над swiper-а при active user
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+section#users > section#table > article.user > div.hidden {
+    display: grid;
+    grid-template-rows: 0fr;
+    padding-inline: 2%;
+    transition: grid-template-rows 500ms;
+}
+
+section#users > section#table > article.user.opened > div.hidden {
+    grid-template-rows: 1fr;
+}
+
+section#users > section#table > article.user > div.hidden > div.hidden-content {
+    font-size: clamp(0.9rem, 5vw, 1.3rem);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+}
+section#users
+    > section#table
+    > article.user
+    > div.hidden
+    > div.hidden-content
+    > * {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    padding-block: 20px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+section#users
+    > section#table
+    > article.user
+    > div.hidden
+    > div.hidden-content
+    > *:nth-child(2),
+section#users
+    > section#table
+    > article.user
+    > div.hidden
+    > div.hidden-content
+    > *:nth-child(3) {
+    background: hsl(0, 0%, 80%);
+    border: 2px solid;
+}
+
+section#users
+    > section#table
+    > article.user
+    > div.hidden
+    > div.hidden-content
+    > *:nth-child(1) {
+    flex-grow: 2;
+    color: #fff;
+}
+
+.counter {
+    &.moderator {
+        background-color: blue;
+    }
+    &.admin {
+        background-color: red;
+    }
+    &.active {
+        background-color: green;
+    }
+    &.user {
+        background-color: grey;
+    }
+    &.warned {
+        background-color: orange;
+    }
+    &.banned {
+        background-color: black;
+    }
+}
