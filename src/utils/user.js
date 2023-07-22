@@ -62,3 +62,13 @@ export function extractAuthErrorMessage(error) {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function getStatus(user) {
+    if (!user) return;
+
+    if (user.intruder !== 'false') return user.intruder;
+    if (user.role === 'user' && user.posts > 5 && user.comments.length > 10)
+        return 'active';
+
+    return user.role;
+}

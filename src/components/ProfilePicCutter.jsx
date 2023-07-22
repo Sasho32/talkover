@@ -17,7 +17,11 @@ function ProfilePicCutter({ user, width }) {
     return (
         <div
             style={style}
-            onClick={() => navigate(`/community/${user.uid}`)}
+            onClick={e => {
+                navigate(`/community/${user.uid}`);
+                e.stopPropagation();
+                // заради article.user в community
+            }}
             className={`profile-pic-cutter ${user.pic ? '' : 'empty'}`}
         >
             {!user.pic && user.username[0].toUpperCase()}

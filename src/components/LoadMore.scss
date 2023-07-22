@@ -3,7 +3,6 @@ section.load-more-btn {
     box-shadow: var(--box-shadow);
     font-weight: bold;
     color: crimson;
-    width: 8rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,5 +14,11 @@ section.load-more-btn {
 
     &:hover {
         cursor: pointer;
+    }
+}
+
+@media (max-width: 600px) {
+    section.load-more-btn {
+        font-size: 1rem;
     }
 }
