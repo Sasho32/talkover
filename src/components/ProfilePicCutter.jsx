@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './ProfilePicCutter.scss';
 
-function pxToRem(value) {
-    return value / 16;
-}
-
-function ProfilePicCutter({ user, width }) {
+function ProfilePicCutter({ user }) {
     const navigate = useNavigate();
 
     if (!user) return <div className="profile-pic-cutter skeleton"></div>;
