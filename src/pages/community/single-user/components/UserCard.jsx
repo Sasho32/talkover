@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { doc, updateDoc } from 'firebase/firestore';
+import {
+    addDoc,
+    collection,
+    doc,
+    serverTimestamp,
+    updateDoc,
+} from 'firebase/firestore';
 import { db } from '../../../../firebase';
 import { replaceElementInCacheMerge } from '../../../../utils/react-query-cache';
 import { getStatus, handleImageUpload } from '../../../../utils/user';
@@ -35,6 +41,27 @@ function UserCard({ queryClient, me, user }) {
                     ...oldData,
                     ...toBeMerged,
                 }));
+
+                if (toBeMerged.role === 'moderator') {
+                    addDoc(collection(db, 'notifications'), {
+                        type: 'moderator',
+                        senderUsername: me.username,
+                        senderPic: me.pic || null,
+                        receiverId: toBeMerged.uid,
+                        read: false,
+                        createdAt: serverTimestamp(),
+                    });
+                }
+                if (toBeMerged.intruder === 'banned') {
+                    addDoc(collection(db, 'notifications'), {
+                        type: 'banned',
+                        senderUsername: me.username,
+                        senderPic: me.pic || null,
+                        receiverId: toBeMerged.uid,
+                        read: false,
+                        createdAt: serverTimestamp(),
+                    });
+                }
             },
         }
     );
