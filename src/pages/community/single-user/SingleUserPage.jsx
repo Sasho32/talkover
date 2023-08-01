@@ -6,7 +6,7 @@ import { UserContext } from '../../../contexts/UserContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import UserCard from './components/UserCard';
-import NotificationBox from '../components/NotificationBox';
+import NotificationBox from './components/NotificationBox';
 import { replaceElementInCache } from '../../../utils/react-query-cache';
 
 function SingleUserPage() {
@@ -30,8 +30,6 @@ function SingleUserPage() {
             const documentReceived = await getDoc(docRef);
             const user = documentReceived.data();
 
-            console.log(user);
-
             const communityCache = queryClient.getQueryData(['users']);
             if (communityCache)
                 replaceElementInCache(user, 'uid', communityCache);
@@ -48,13 +46,16 @@ function SingleUserPage() {
     if (isError) return <h1>Error: {error.message}</h1>;
 
     return (
-        <UserCard
-            key={user.uid}
-            // за own profile, userRecord е null в началото
-            queryClient={queryClient}
-            me={userRecord}
-            user={user}
-        />
+        <>
+            {userRecord?.uid === userId && <NotificationBox userId={userId} />}
+            <UserCard
+                key={user.uid}
+                // за own profile, userRecord е null в началото
+                queryClient={queryClient}
+                me={userRecord}
+                user={user}
+            />
+        </>
     );
 }
 
