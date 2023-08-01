@@ -3,7 +3,8 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { auth, db } from '../firebase';
+import { auth, db, storage } from '../firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 export async function getUserRecord(userId) {
     const docRef = doc(db, 'users', userId);
@@ -71,4 +72,11 @@ export function getStatus(user) {
         return 'active';
 
     return user.role;
+}
+
+export async function handleImageUpload(folder, id, img) {
+    const storageRef = await ref(storage, `images/${folder}/${id}`);
+    const snapshot = await uploadBytes(storageRef, img);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL.toString();
 }

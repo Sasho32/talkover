@@ -21,4 +21,6 @@ export function replaceElementInCacheMerge(
             }
         });
     });
+
+    return pages;
 }
