@@ -6,24 +6,29 @@ import {
     RouterProvider,
     Navigate,
 } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { onAuthStateChanged } from 'firebase/auth';
 import { onSnapshot, doc } from 'firebase/firestore';
-import { UserContext } from './UserContext';
 import { auth, db } from './firebase';
+import { UserContext } from './contexts/UserContext';
 import AuthRoute from './protected-routes/AuthRoute';
-import NonBannedRoute from './protected-routes/NonBannedRoute';
-import ModRoute from './protected-routes/ModRoute';
-import AuthPage from './pages/auth/AuthPage';
 import GuestRoute from './protected-routes/GuestRoute';
+import ModRoute from './protected-routes/ModRoute';
+import NonBannedRoute from './protected-routes/NonBannedRoute';
+import AuthPage from './pages/auth/AuthPage';
+import SharedLayout from './components/SharedLayout';
+import DashboardLayout from './pages/home/dashboard/components/DashboardLayout';
+import DashboardPage from './pages/home/dashboard/DashboardPage';
+import LikedPostsPage from './pages/liked-posts/LikedPostsPage';
+import MyPostsPage from './pages/my-posts/MyPostsPage';
 import './App.scss';
 import './Main.scss';
-import SharedLayout from './components/SharedLayout';
-import PostsPage from './pages/posts/PostsPage';
-import DashboardLayout from './components/DashboardLayout';
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import PollsPage from './pages/polls/PollsPage';
-import LikedPostsPage from './pages/liked-posts/LikedPostsPage';
+import NewPollPage from './pages/home/polls/new/NewPollPage';
+import NewPostPage from './pages/home/posts/new/NewPostPage';
+import PendingPostsPage from './pages/pending-posts/PendingPostsPage';
+import CommunityPage from './pages/community/CommunityPage';
+import SingleUserPage from './pages/community/single-user/SingleUserPage';
+import SinglePostPage from './pages/home/posts/single-post/SinglePostPage';
 
 const client = new QueryClient();
 
@@ -37,23 +42,20 @@ const router = createBrowserRouter(
                 <Route element={<SharedLayout />}>
                     <Route element={<DashboardLayout />}>
                         <Route path="/home">
-                            <Route path="posts" element={<PostsPage />} />
+                            <Route path="posts" element={<DashboardPage />} />
 
-                            <Route path="polls" element={<PollsPage />} />
+                            <Route path="polls" element={<DashboardPage />} />
                         </Route>
                     </Route>
 
                     <Route path="/home">
                         <Route path="posts">
                             <Route
-                                path=":id"
-                                element={<span>Single post view</span>}
+                                path=":postId"
+                                element={<SinglePostPage />}
                             />
                             <Route element={<NonBannedRoute />}>
-                                <Route
-                                    path="new"
-                                    element={<span>Create post view</span>}
-                                />
+                                <Route path="new" element={<NewPostPage />} />
                             </Route>
                         </Route>
                         {/* ще приема qp comment=commentId => ако го има директно вкарва в comments mode и го търси - ако го няма изкарва коментарите поред и просто някакъв спан 'comment you are looking for was not found';
@@ -61,23 +63,17 @@ const router = createBrowserRouter(
                                 */}
                         <Route path="polls">
                             <Route element={<ModRoute />}>
-                                <Route
-                                    path="new"
-                                    element={<span>Create poll view</span>}
-                                />
+                                <Route path="new" element={<NewPollPage />} />
                             </Route>
                         </Route>
                     </Route>
 
-                    <Route
-                        path="/liked-posts"
-                        element={<span>Liked posts page</span>}
-                    />
-                    <Route path="/my-posts" element={<PostsPage />} />
+                    <Route path="/liked-posts" element={<LikedPostsPage />} />
+                    <Route path="/my-posts" element={<MyPostsPage />} />
                     <Route element={<ModRoute />}>
                         <Route
                             path="/pending-posts"
-                            element={<span>Pending posts view</span>}
+                            element={<PendingPostsPage />}
                         />
                     </Route>
 
@@ -86,11 +82,8 @@ const router = createBrowserRouter(
                         element={<span>My comments page</span>}
                     />
                     <Route path="/community">
-                        <Route index element={<span>Community page</span>} />
-                        <Route
-                            path=":userId"
-                            element={<span>Profile page</span>}
-                        />
+                        <Route index element={<CommunityPage />} />
+                        <Route path=":userId" element={<SingleUserPage />} />
                     </Route>
                 </Route>
             </Route>
