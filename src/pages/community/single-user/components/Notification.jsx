@@ -33,7 +33,6 @@ function Notification({ notification }) {
         ]);
 
         console.log(sender);
-        git;
 
         if (sender) return setSender(sender);
 
