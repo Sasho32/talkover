@@ -10,6 +10,7 @@ import 'react-quill/dist/quill.snow.css';
 import ProfilePicCutter from '../../../../components/ProfilePicCutter';
 import './SinglePostPage.scss';
 import { useEffect } from 'react';
+import Comments from './components/Comments';
 
 function SinglePostPage() {
     const [showComments, setShowComments] = useState(false);
@@ -29,12 +30,15 @@ function SinglePostPage() {
         async () => {
             const docRef = doc(db, 'posts', postId);
             const documentReceived = await getDoc(docRef);
-            const post = documentReceived.data();
+            const post = {
+                ...documentReceived.data(),
+                id: documentReceived.id,
+            };
 
             if (!post) return null;
 
             if (post.author !== userRecord.uid) {
-                updateViews();
+                // updateViews();
             }
 
             const authorCache = queryClient.getQueryData([
@@ -175,6 +179,28 @@ function SinglePostPage() {
         }));
     }
 
+    const { mutate: lockPost } = useMutation(
+        async post => {
+            console.log(post);
+            const postRef = doc(db, 'posts', post.id);
+
+            await updateDoc(postRef, { locked: true });
+        },
+        {
+            onSuccess: () => {},
+        }
+    );
+    const { mutate: unlockPost } = useMutation(
+        async post => {
+            const postRef = doc(db, 'posts', post.id);
+
+            await updateDoc(postRef, { locked: false });
+        },
+        {
+            onSuccess: () => {},
+        }
+    );
+
     if (isLoading) {
         return <section id="single-post" className="skeleton"></section>;
     }
@@ -200,11 +226,13 @@ function SinglePostPage() {
                             <div className="options">
                                 {post.locked ? (
                                     <i
+                                        onClick={() => unlockPost(post)}
                                         style={{ color: 'yellowgreen' }}
                                         className="fa-solid fa-lock-open"
                                     ></i>
                                 ) : (
                                     <i
+                                        onClick={() => lockPost(post)}
                                         style={{ color: 'crimson' }}
                                         className="fa-solid fa-lock"
                                     ></i>
@@ -277,6 +305,16 @@ function SinglePostPage() {
                                 </div>
                             </section>
                         </div>
+                        <Comments
+                            locked={
+                                !!post.locked ||
+                                userRecord?.intruder === 'banned'
+                            }
+                            showComments={showComments}
+                            postId={postId}
+                            postAuthor={post.author}
+                            userId={userRecord?.uid}
+                        />
                     </div>
                 </section>
             </article>
