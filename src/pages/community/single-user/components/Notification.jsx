@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../../firebase';
+import ProfilePicCutter from '../../../../components/ProfilePicCutter';
 import { calculateRelativeTime } from '../../../../utils/relative-time';
 
 const icons = {
@@ -19,6 +21,32 @@ const messages = {
 
 function Notification({ notification }) {
     const queryClient = useQueryClient();
+
+    const [sender, setSender] = useState(null);
+
+    useEffect(() => {
+        if (!notification) return;
+
+        const sender = queryClient.getQueryData([
+            'users',
+            notification.senderId,
+        ]);
+
+        console.log(sender);
+        git;
+
+        if (sender) return setSender(sender);
+
+        console.log('fetching sender');
+
+        const senderRef = doc(db, 'users', notification.senderId);
+        getDoc(senderRef).then(senderReceived => {
+            setSender(senderReceived.data());
+            queryClient.setQueryData(['users', senderReceived.id], () =>
+                senderReceived.data()
+            );
+        });
+    }, []);
 
     const { mutate } = useMutation(
         async ({ toBeMerged, id }) => {
@@ -68,19 +96,7 @@ function Notification({ notification }) {
         >
             <div className="notification-container">
                 <div className="notification-media">
-                    <div
-                        style={{
-                            backgroundImage: notification.senderPic
-                                ? `url(${notification.senderPic})`
-                                : {},
-                        }}
-                        className={`notification-user-avatar ${
-                            notification.senderPic ? '' : 'empty'
-                        }`}
-                    >
-                        {!notification.senderPic &&
-                            notification.senderUsername[0].toUpperCase()}
-                    </div>
+                    <ProfilePicCutter user={sender} />
                     <i
                         className={`fa-solid ${notification.type} ${
                             icons[notification.type]
@@ -89,9 +105,7 @@ function Notification({ notification }) {
                 </div>
                 <div className="notification-content">
                     <p className="notification-text">
-                        {messages[notification.type](
-                            notification.senderUsername
-                        )}
+                        {messages[notification.type](sender?.username || '')}
                     </p>
                     <span className="notification-timer">
                         {calculateRelativeTime(notification.createdAt)}
