@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../../firebase';
@@ -21,6 +22,7 @@ const messages = {
 
 function Notification({ notification }) {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const [sender, setSender] = useState(null);
 
@@ -84,7 +86,9 @@ function Notification({ notification }) {
     if (!notification) return <div className={`notification skeleton`}></div>;
 
     function readHandler() {
-        mutate({ toBeMerged: { read: true }, id: notification.id });
+        if (!notification.read)
+            mutate({ toBeMerged: { read: true }, id: notification.id });
+        if (notification.postId) navigate(`/home/posts/${notification.postId}`);
     }
 
     return (
