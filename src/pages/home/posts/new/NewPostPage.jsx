@@ -182,7 +182,11 @@ function NewPostPage() {
 
     return (
         <section className="create">
-            <ChooseCategory category={category} setCategory={setCategory} />
+            <ChooseCategory
+                category={category}
+                setCategory={setCategory}
+                type="post"
+            />
             <div className="topic">
                 <label htmlFor="topic">What's the post about?</label>
                 <input
