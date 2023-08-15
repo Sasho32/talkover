@@ -1,0 +1,31 @@
+main {
+    > section#comments {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        h3.delimeter {
+            // border-bottom: 2px dashed;
+            padding-inline: 1rem 0;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    main {
+        > section#comments {
+            font-size: 0.8rem;
+            // width: 100%;
+            border-radius: 0;
+            // gap: 0;
+
+            h3.delimeter {
+                padding-inline: 0 0.5rem;
+                // background-color: rgba(0, 145, 255, 0.459);
+                text-align: right;
+                // margin-block: 0.5rem;
+                // padding: 1rem;
+            }
+        }
+    }
+}

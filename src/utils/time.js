@@ -37,3 +37,30 @@ export function calculateRelativeTime(firebaseTimestamp) {
 
     return 'Just now';
 }
+
+export function firebaseTimestampToHour(firebaseTimestamp) {
+    // Convert the Firebase timestamp to a JavaScript Date object
+    const jsDate = firebaseTimestamp.toDate();
+
+    // Get the hours and minutes from the Date object
+    const hours = jsDate.getHours();
+    const minutes = jsDate.getMinutes();
+
+    // Format the hours and minutes as "HH:mm"
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
+        .toString()
+        .padStart(2, '0')}`;
+
+    return formattedTime;
+}
+
+export function formatDateFromFirebaseTimestamp(firebaseTimestamp) {
+    const jsDate = firebaseTimestamp.toDate();
+    const day = jsDate.getDate();
+    const month = jsDate.toLocaleString('en-US', { month: 'long' });
+
+    // Format the date as "28 May" or "30 June"
+    const formattedDate = `${day} ${month}`;
+
+    return formattedDate;
+}

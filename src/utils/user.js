@@ -60,7 +60,7 @@ export function extractAuthErrorMessage(error) {
     return capitalizeFirstLetter(type).replaceAll('-', ' ') + '.';
 }
 
-function capitalizeFirstLetter(string) {
+export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
